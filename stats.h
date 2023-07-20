@@ -3,7 +3,7 @@
 #include <vector>
 #include<algorithm>
 #include <numeric>
-
+#include<limits>
 
 namespace Statistics {
     struct Stats
