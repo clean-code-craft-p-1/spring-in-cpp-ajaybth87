@@ -3,7 +3,8 @@
 #include <vector>
 #include<algorithm>
 #include <numeric>
-#include<limits>
+#include <limits>
+#define NAN (std::numeric_limits<double>::quiet_NaN())
 
 namespace Statistics {
     struct Stats
