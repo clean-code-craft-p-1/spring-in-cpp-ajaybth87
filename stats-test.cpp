@@ -17,9 +17,9 @@ TEST(Statistics, AverageNaNForEmpty) {
 //    //Design the REQUIRE statement here.
 //    //Use http://www.cplusplus.com/reference/cmath/isnan/
 
-      EXPECT_TRUE(isnan(computedStats.average));
-      EXPECT_TRUE(isnan(computedStats.max));
-      EXPECT_TRUE(isnan(computedStats.min));
+      EXPECT_TRUE(std::isnan(computedStats.average));
+      EXPECT_TRUE(std::isnan(computedStats.max));
+      EXPECT_TRUE(std::isnan(computedStats.min));
 }
 //
 TEST(Alert, AlertsWhenMaxExceeds) {
