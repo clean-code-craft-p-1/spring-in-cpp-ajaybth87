@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include <vector>
 #include<algorithm>
@@ -17,49 +16,57 @@ namespace Statistics {
     Stats ComputeStatistics(const std::vector<double>& );
 
     template<typename T>
-    double getAverage(std::vector<T> const& v) {
-        if (v.empty()) {
+    double getAverage(std::vector<T> const& Data) {
+        if (Data.empty()) {
             return 0;
         }
-        return std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+        return std::accumulate(Data.begin(), Data.end(), 0.0) / Data.size();
     }
 }
 
-class IAlerter
-{
-public:
-    double maxThreshold;
-public:
-    virtual void checkAndAlert(const std::vector<double>&) = 0;
-    virtual void setThreshold(double) = 0;
-};
 
-class EmailAlert :public IAlerter
+namespace Alert
 {
-public:
-    bool emailSent;
+    class IAlerter
+    {
+    public:
+        IAlerter() :maxThreshold{ 0 } {}
+        virtual void setThreshold(double) = 0;
+        virtual void alert(const std::vector<double>&) = 0;
+    protected:
+        double maxThreshold;   
+        virtual ~IAlerter() {};
+    };
+
+    class EmailAlert :public IAlerter
+    {
+    public:
+        bool emailSent;
     public:
         EmailAlert();
-        void checkAndAlert(const std::vector<double>& Container) override;
+        void alert(const std::vector<double>& Container) override;
         void setThreshold(double Thresold) override;
-};
+        ~EmailAlert();
+    };
 
-class LEDAlert :public IAlerter
-{
-public:
-    bool ledGlows;
-public:
-    LEDAlert();
-    void checkAndAlert(const std::vector<double>& Container) override;
-    void setThreshold(double Thresold) override;
-};
+    class LEDAlert :public IAlerter
+    {
+    public:
+        bool ledGlows;
+    public:
+        LEDAlert();
+        void alert(const std::vector<double>& Container) override;
+        void setThreshold(double Thresold) override;
+        ~LEDAlert();
+    };
 
 
-class StatsAlerter
-{
-    std::vector<IAlerter*> alerts;
-public:
-    StatsAlerter();
-    StatsAlerter(double, std::vector<IAlerter*>);
-    void checkAndAlert(const std::vector<double>& Container);
-};
+    class StatsAlerter
+    {
+        std::vector<IAlerter*> alerts;
+    public:
+        StatsAlerter();
+        StatsAlerter(double, std::vector<IAlerter*>);
+        void checkAndAlert(const std::vector<double>& Container);
+    };
+}

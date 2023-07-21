@@ -1,7 +1,5 @@
 #include "stats.h"
 
-using namespace std;
-
 
 Statistics::Stats Statistics::ComputeStatistics(const std::vector<double>& Container ) {
    Statistics::Stats obj;
@@ -21,58 +19,63 @@ Statistics::Stats Statistics::ComputeStatistics(const std::vector<double>& Conta
    return obj;
 }
 
-EmailAlert::EmailAlert()
+Alert::EmailAlert::EmailAlert()
 {
     maxThreshold = 0;
     emailSent = false;
 }
 
-void EmailAlert::checkAndAlert(const std::vector<double>& Container) 
+Alert::EmailAlert::~EmailAlert()
 {
-    for (auto itr = Container.begin();itr != Container.end();itr++)
+    // Do nothing
+}
+void Alert::EmailAlert::alert(const std::vector<double>& Container)
+{
+    auto itr = max_element(Container.begin(), Container.end());
+    if (*itr > maxThreshold)
     {
-        if (*itr > maxThreshold) {
-            emailSent = true;
-            break;
-        }
+        emailSent = true;
     }
 
 }
 
-void EmailAlert::setThreshold(double Thresold)
+void Alert::EmailAlert::setThreshold(double Thresold)
 {
     maxThreshold = Thresold;
 }
 
 
-LEDAlert::LEDAlert()
+Alert::LEDAlert::LEDAlert()
 {
     maxThreshold = 0;
     ledGlows = false;
 }
 
-void LEDAlert::checkAndAlert(const std::vector<double>& Container)
+Alert::LEDAlert::~LEDAlert()
 {
-    for (auto itr = Container.begin();itr != Container.end();itr++)
-    {
-        if (*itr > maxThreshold) {
-            ledGlows = true;
-            break;
-        }
-    }
+    //Do nothing
 }
 
-void LEDAlert::setThreshold(double Thresold)
+void Alert::LEDAlert::alert(const std::vector<double>& Container)
+{
+    auto itr = max_element(Container.begin(), Container.end());
+        if (*itr > maxThreshold)
+        {
+            ledGlows = true;  
+        }
+}
+
+void Alert::LEDAlert::setThreshold(double Thresold)
 {
     maxThreshold = Thresold;
 }
 
-StatsAlerter::StatsAlerter()
+Alert::StatsAlerter::StatsAlerter()
 {
     alerts = { nullptr };
 }
 
-StatsAlerter::StatsAlerter(double thresold, std::vector<IAlerter*> container)
+Alert::StatsAlerter::StatsAlerter(double thresold, std::vector<IAlerter*> container)
 {
     alerts = container;
     for (auto itr = alerts.begin();itr != alerts.end();itr++)
@@ -81,10 +84,10 @@ StatsAlerter::StatsAlerter(double thresold, std::vector<IAlerter*> container)
     }
 }
 
-void StatsAlerter::checkAndAlert(const std::vector<double>& Container)
+void Alert::StatsAlerter::checkAndAlert(const std::vector<double>& Container)
 {
     for (auto itr = alerts.begin();itr != alerts.end();itr++)
     {
-        (*itr)->checkAndAlert(Container);
+        (*itr)->alert(Container);
     }
 }
