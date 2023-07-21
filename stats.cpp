@@ -84,18 +84,18 @@ Alert::StatsAlerter::StatsAlerter()
 
 Alert::StatsAlerter::StatsAlerter(double thresold, std::vector<IAlerter*> alertersVar)
 {
-    this->alerters = alertersVar;
-    for each (auto itr in alerters)
+    alerters = alertersVar;
+    for(auto itr=alerters.begin();itr!= alerters.end(); ++itr)
     {
-        itr->setThreshold(thresold);
+        (*itr)->setThreshold(thresold);
     }
 }
 
 void Alert::StatsAlerter::checkAndAlert(const std::vector<double>& container) const
 {
-    for each (auto itr in alerters) 
+    for (auto itr = alerters.begin();itr != alerters.end(); ++itr)
     {
-        itr->alert(container);
+        (*itr)-> alert(container);
     }
 }
 
