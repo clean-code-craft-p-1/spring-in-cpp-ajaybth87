@@ -1,6 +1,5 @@
 #include "stats.h"
 
-
 Statistics::Stats Statistics::ComputeStatistics(const std::vector<double>& container ) {
    Statistics::Stats obj;
    if (!container.empty()) {
@@ -12,13 +11,21 @@ Statistics::Stats Statistics::ComputeStatistics(const std::vector<double>& conta
    }
    else
    {
-       obj.max = NAN;
-       obj.min = NAN;
-       obj.average = NAN;
+       obj.max = CUSTOMNAN;
+       obj.min = CUSTOMNAN;
+       obj.average = CUSTOMNAN;
    }
    return obj;
 }
 
+Alert::IAlerter::IAlerter() :maxThreshold{ 0 } 
+{
+    //Do nothing
+}
+Alert::IAlerter::~IAlerter()
+{
+    //Do nothing
+}
 Alert::EmailAlert::EmailAlert()
 {
     maxThreshold = 0;
@@ -78,17 +85,17 @@ Alert::StatsAlerter::StatsAlerter()
 Alert::StatsAlerter::StatsAlerter(double thresold, std::vector<IAlerter*> alertersVar)
 {
     this->alerters = alertersVar;
-    for (auto itr = alerters.begin();itr != alerters.end();itr++)
+    for each (auto itr in alerters)
     {
-        (*itr)->setThreshold(thresold);
+        itr->setThreshold(thresold);
     }
 }
 
-void Alert::StatsAlerter::checkAndAlert(const std::vector<double>& Container)
+void Alert::StatsAlerter::checkAndAlert(const std::vector<double>& container) const
 {
-    for (auto itr = alerters.begin();itr != alerters.end();itr++)
+    for each (auto itr in alerters) 
     {
-        (*itr)->alert(Container);
+        itr->alert(container);
     }
 }
 
