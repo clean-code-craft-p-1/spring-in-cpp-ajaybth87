@@ -19,7 +19,7 @@ TEST(Statistics, AverageNaNForEmpty) {
       EXPECT_TRUE(std::isnan(computedStats.max));
       EXPECT_TRUE(std::isnan(computedStats.min));
 }
-//
+
 TEST(Alert, AlertsWhenMaxExceeds) {
     EmailAlert emailAlert;
     LEDAlert ledAlert;

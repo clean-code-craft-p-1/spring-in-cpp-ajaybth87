@@ -16,11 +16,11 @@ namespace Statistics {
     Stats ComputeStatistics(const std::vector<double>& );
 
     template<typename T>
-    double getAverage(std::vector<T> const& Data) {
-        if (Data.empty()) {
+    double getAverage(std::vector<T> const& data) {
+        if (data.empty()) {
             return 0;
         }
-        return std::accumulate(Data.begin(), Data.end(), 0.0) / Data.size();
+        return std::accumulate(data.begin(), data.end(), 0.0) / data.size();
     }
 }
 
@@ -63,10 +63,11 @@ namespace Alert
 
     class StatsAlerter
     {
-        std::vector<IAlerter*> alerts;
+        std::vector<IAlerter*> alerters;
     public:
         StatsAlerter();
         StatsAlerter(double, std::vector<IAlerter*>);
         void checkAndAlert(const std::vector<double>& Container);
+        ~StatsAlerter();
     };
 }
